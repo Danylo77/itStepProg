@@ -90,6 +90,7 @@ public class DBTeachers extends SQLiteOpenHelper {
         }else
             Log.d("mLog","0 rows");
         cursor.close();
+        db.close();
 
     }
 
@@ -149,6 +150,7 @@ public class DBTeachers extends SQLiteOpenHelper {
         }else
             Log.d("mLog","0 rows");
         cursor.close();
+        db.close();
         return list;
     }
 

@@ -1,10 +1,13 @@
 package com.example.myapplication;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.List;
 
 public class DBAudiences extends SQLiteOpenHelper {
     private static DBAudiences sInstance;
@@ -66,7 +69,29 @@ public class DBAudiences extends SQLiteOpenHelper {
         }else
             Log.d("mLog","0 rows");
         cursor.close();
+        db.close();
 
+    }
+
+    void writeBusyAudiences(List<Integer> list) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
+            do{
+                ContentValues cv = new ContentValues();
+                if(list.contains(cursor.getInt(numberIndex))){
+                    cv.put(KEY_TF, 1);
+                }else{cv.put(KEY_TF, 0);}
+
+                db.update(TABLE_AUDIENCES, cv, "_id="+cursor.getInt(idIndex), null);
+
+            }while (cursor.moveToNext());
+        }else
+            Log.d("mLog","0 rows");
+        cursor.close();
+        db.close();
     }
 }
 
