@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,10 +100,10 @@ public class DBTeachers extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_TEACHERS, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()){
-            int idIndex = cursor.getColumnIndex(KEY_ID); // 0
-            int nameIndex = cursor.getColumnIndex(KEY_NAME); // 1
-            int surnameIndex = cursor.getColumnIndex(KEY_SURNAME); // 2
-            int subjectIndex = cursor.getColumnIndex(KEY_SUBJECT); // 3
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            int nameIndex = cursor.getColumnIndex(KEY_NAME);
+            int surnameIndex = cursor.getColumnIndex(KEY_SURNAME);
+            int subjectIndex = cursor.getColumnIndex(KEY_SUBJECT);
             int timeIndex = cursor.getColumnIndex(KEY_TIME);
             int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
             do{
@@ -118,8 +119,10 @@ public class DBTeachers extends SQLiteOpenHelper {
                     String secondHour = dayAndHour.substring(dayAndHour.indexOf("-")+1);
 
                     //get day of month by current week and day
-                    LocalDate date = d.with(TemporalAdjusters.dayOfWeekInMonth(now.get(Calendar.WEEK_OF_MONTH), day));
-
+                    LocalDate date = d.with(TemporalAdjusters.dayOfWeekInMonth(now.get(Calendar.WEEK_OF_MONTH)-1, day));
+                    if(date.getDayOfMonth()<now.get(Calendar.DAY_OF_MONTH)){
+                        date = d.with(TemporalAdjusters.dayOfWeekInMonth(now.get(Calendar.WEEK_OF_MONTH), day));
+                    }
                     //parse hour and minutes
                     Calendar c1 = Calendar.getInstance();
                     Calendar c2 = Calendar.getInstance();
@@ -133,13 +136,10 @@ public class DBTeachers extends SQLiteOpenHelper {
                     }
 
                     //get start and end date to create interval object
-                    DateTime start = new DateTime(day.getValue(), date.getMonthValue(), date.getDayOfMonth(), c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), 0, 0);
-                    DateTime end = new DateTime(day.getValue(), date.getMonthValue(), date.getDayOfMonth(), c2.get(Calendar.HOUR_OF_DAY), c2.get(Calendar.MINUTE), 0, 0);
+                    DateTime start = new DateTime(now.get(Calendar.YEAR), date.getMonthValue(), date.getDayOfMonth(), c1.get(Calendar.HOUR_OF_DAY), c1.get(Calendar.MINUTE), 0, 0);
+                    DateTime end = new DateTime(now.get(Calendar.YEAR), date.getMonthValue(), date.getDayOfMonth(), c2.get(Calendar.HOUR_OF_DAY), c2.get(Calendar.MINUTE), 0, 0);
                     Interval interval = new Interval(start, end);
-                    Log.v("interval", "Interval: " + interval.toString());
-                    Log.v("interval", "Start: " + start.toString()+", End: " + end.toString());
-                    Log.v("interval", "DAY OF MONTH IN START: " + start.getDayOfMonth());
-                    Log.v("interval", "MONTH IN START: " + start.getMonthOfYear());
+                    Log.v("interval", "Start: " + start.toString() +", End: " + end.toString());
 
                     list.add(new Lesson(cursor.getString(nameIndex),cursor.getString(surnameIndex),
                             cursor.getString(subjectIndex),interval,cursor.getInt(numberIndex)));
