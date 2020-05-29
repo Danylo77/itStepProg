@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,23 +9,17 @@ import android.view.MenuItem;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
-import org.joda.time.Interval;
+import com.example.myapplication.audiences.AudiencesFragment;
+import com.example.myapplication.audiences.DBAudiences;
+import com.example.myapplication.teachers.DBTeachers;
+import com.example.myapplication.teachers.TeachersFragment;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
@@ -68,9 +61,22 @@ public class MainActivity extends AppCompatActivity {
         fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
-                //TODO: Start some activity
+                switch (menuItem.getTitle().toString()){
+                    case "Audiences":
+                        showFragment(new AudiencesFragment());
+                        break;
+                    case "Teachers":
+                        showFragment(new TeachersFragment());
+                }
+                Log.v("menuItem",menuItem.getTitle()+"");
                 return false;
             }
         });
+    }
+    public void showFragment(Fragment fragment) {
+        FragmentTransaction mTransactiont = getSupportFragmentManager().beginTransaction();
+
+        mTransactiont.replace(R.id.mainFrame, fragment, fragment.getClass().getName());
+        mTransactiont.commit();
     }
 }

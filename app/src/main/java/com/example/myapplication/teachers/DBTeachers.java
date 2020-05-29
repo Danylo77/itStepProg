@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.teachers;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,16 +9,15 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.myapplication.Lesson;
+
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.joda.time.LocalDateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +67,7 @@ public class DBTeachers extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_TEACHERS);
         onCreate(db);
     }
-    void logDB(){
+    public void logDB(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_TEACHERS, null, null, null, null, null, null);
 

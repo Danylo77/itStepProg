@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.audiences;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBAudiences extends SQLiteOpenHelper {
@@ -49,15 +50,15 @@ public class DBAudiences extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + TABLE_AUDIENCES);
         onCreate(db);
     }
-    void logDB(){
+    public void logDB(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()){
-            int idIndex = cursor.getColumnIndex(KEY_ID); // 0
-            int floorIndex = cursor.getColumnIndex(KEY_FLOOR); // 1
-            int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD); // 2
-            int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION); // 3
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            int floorIndex = cursor.getColumnIndex(KEY_FLOOR);
+            int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
+            int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION);
             int tfIndex = cursor.getColumnIndex(KEY_TF);
             do{
                 Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
@@ -73,7 +74,7 @@ public class DBAudiences extends SQLiteOpenHelper {
 
     }
 
-    void writeBusyAudiences(List<Integer> list) {
+    public void writeBusyAudiences(List<Integer> list) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
         if (cursor.moveToFirst()){
@@ -92,6 +93,30 @@ public class DBAudiences extends SQLiteOpenHelper {
             Log.d("mLog","0 rows");
         cursor.close();
         db.close();
+    }
+
+    ArrayList<Audience> getAllAudiencesByFloor(int floor) {
+        ArrayList<Audience> audiences = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            int floorIndex = cursor.getColumnIndex(KEY_FLOOR);
+            int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
+            int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION);
+            int tfIndex = cursor.getColumnIndex(KEY_TF);
+            do{
+                ContentValues cv = new ContentValues();
+                if(cursor.getInt(floorIndex) == floor){
+                    audiences.add(new Audience(cursor.getInt(tfIndex),cursor.getInt(numberIndex),
+                            cursor.getInt(floorIndex),cursor.getString(descriptionIndex)));
+                }
+            }while (cursor.moveToNext());
+        }else
+            Log.d("mLog","0 rows");
+        cursor.close();
+        db.close();
+        return audiences;
     }
 }
 
