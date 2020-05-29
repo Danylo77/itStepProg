@@ -100,13 +100,12 @@ public class DBAudiences extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
         if (cursor.moveToFirst()){
-            int idIndex = cursor.getColumnIndex(KEY_ID);
+            //int idIndex = cursor.getColumnIndex(KEY_ID);
             int floorIndex = cursor.getColumnIndex(KEY_FLOOR);
             int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
             int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION);
             int tfIndex = cursor.getColumnIndex(KEY_TF);
             do{
-                ContentValues cv = new ContentValues();
                 if(cursor.getInt(floorIndex) == floor){
                     audiences.add(new Audience(cursor.getInt(tfIndex),cursor.getInt(numberIndex),
                             cursor.getInt(floorIndex),cursor.getString(descriptionIndex)));

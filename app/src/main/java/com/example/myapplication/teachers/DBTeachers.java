@@ -9,7 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.myapplication.Lesson;
+import com.example.myapplication.audiences.Lesson;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;

@@ -1,8 +1,10 @@
-package com.example.myapplication;
+package com.example.myapplication.audiences;
 
 import org.joda.time.Interval;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Lesson {
     private int id;
@@ -77,5 +79,15 @@ public class Lesson {
                 ", interval=" + interval +
                 ", audNumber=" + audNumber +
                 '}';
+    }
+
+    static ArrayList<Lesson> getAllLessonsByAudience(List<Lesson> lessonsList, int audNumber) {
+        ArrayList<Lesson> lessonsByAud = new ArrayList<>();
+        for(Lesson lesson: lessonsList){
+            if(lesson.getAudNumber() == audNumber){
+                lessonsByAud.add(lesson);
+            }
+        }
+        return lessonsByAud;
     }
 }

@@ -10,7 +10,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:translationZ="10dp">
 
         <io.github.yavski.fabspeeddial.FabSpeedDial
             android:layout_width="wrap_content"
@@ -21,7 +22,8 @@
             android:id="@+id/fab_speed_dial"
             app:miniFabBackgroundTint="@android:color/white"
             app:miniFabDrawableTint="?attr/colorPrimaryDark"
-            app:miniFabTitleTextColor="?attr/colorPrimaryDark" />
+            app:miniFabTitleTextColor="?attr/colorPrimaryDark"
+            />
 
     </FrameLayout>
 

@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.audiences.AudiencesFragment;
 import com.example.myapplication.audiences.DBAudiences;
+import com.example.myapplication.audiences.Lesson;
 import com.example.myapplication.teachers.DBTeachers;
 import com.example.myapplication.teachers.TeachersFragment;
 
