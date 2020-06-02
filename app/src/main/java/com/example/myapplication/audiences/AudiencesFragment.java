@@ -136,12 +136,13 @@ public class AudiencesFragment extends Fragment {
                 adapterAud = new RecyclerViewAdapterAudiences(getContext(), audiences);
                 recyclerViewAud.setAdapter(adapterAud);
                 lessons.clear();
+                days_btn.setVisibility(View.INVISIBLE);
 
                 // when clicked on audience
                 adapterAud.setOnAudienceClickedListener(new OnAudienceClickedListener() {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
-                    public void onAudienceClickedListener(Audience audience) {
+                    public void onAudienceClickedListener(final Audience audience) {
                         //initLessonsInAudience(audience.getNumber());
 
                         //initLessonsInAudienceByDay(audience.getNumber(),timeNow.get(Calendar.DAY_OF_WEEK));
@@ -152,11 +153,40 @@ public class AudiencesFragment extends Fragment {
 
                         Toast.makeText(getContext(), audience.getNumber()+"", Toast.LENGTH_SHORT).show();
                         LinearLayoutManager layoutManagerLessons = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                        RecyclerView recyclerViewLessons = view.findViewById(R.id.recyclerViewLessons);
+                        final RecyclerView recyclerViewLessons = view.findViewById(R.id.recyclerViewLessons);
                         recyclerViewLessons.setLayoutManager(layoutManagerLessons);
                         adapterLessons = new RecyclerViewAdapterLessons(getContext(), lessons);
                         recyclerViewLessons.setAdapter(adapterLessons);
 
+                        if(!lessons.isEmpty()){
+                            days_btn.setVisibility(View.VISIBLE);
+                        } else days_btn.setVisibility(View.INVISIBLE);
+
+                        View.OnClickListener listener = new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                PopupMenu popup = new PopupMenu(getContext(), v);
+                                popup.getMenuInflater().inflate(R.menu.popup_days, popup.getMenu());
+                                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        days_btn.setText(item.getTitle());
+                                        lessons.clear();
+                                        initLessonsInAudienceByDay(audience.getNumber(),daysE.get(item.getTitle()));
+                                        adapterLessons = new RecyclerViewAdapterLessons(getContext(), lessons);
+                                        recyclerViewLessons.setAdapter(adapterLessons);
+
+                                        return true;
+                                    }
+
+                                });
+                                popup.show();
+
+                            }
+                        };
+                        days_btn.setOnClickListener(listener);
 
                         // when clicked on lesson
                         adapterLessons.setOnLessonClickedListener(new OnLessonClickedListener() {
@@ -165,8 +195,11 @@ public class AudiencesFragment extends Fragment {
                                 Toast.makeText(getContext(), lesson.getSubjectName()+"", Toast.LENGTH_SHORT).show();
                             }
                         });
+
                     }
+
                 });
+
 
             }
         });
