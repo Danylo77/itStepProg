@@ -36,7 +36,6 @@ import java.util.Map;
 
 public class AudiencesFragment extends Fragment {
 
-    private static final String TAG = "MainActivity";
     private RecyclerViewAdapterFloors adapterFloor;
     private RecyclerViewAdapterAudiences adapterAud;
     private RecyclerViewAdapterLessons adapterLessons;
@@ -49,7 +48,6 @@ public class AudiencesFragment extends Fragment {
     private DBTeachers dbTeachers;
 
     private TextView days_btn;
-    private Calendar timeNow;
 
     private Map<String,Integer> daysE;
 
@@ -68,8 +66,6 @@ public class AudiencesFragment extends Fragment {
         daysE = new HashMap<>();
         daysE.put("Mon",1);daysE.put("Tue",2);daysE.put("Wed",3);
         daysE.put("Thu",4);daysE.put("Fri",5);daysE.put("Sat",6);daysE.put("Sun",7);
-
-        timeNow = Calendar.getInstance();
 
         initRecycleFloorView();
 
@@ -158,9 +154,7 @@ public class AudiencesFragment extends Fragment {
                         adapterLessons = new RecyclerViewAdapterLessons(getContext(), lessons);
                         recyclerViewLessons.setAdapter(adapterLessons);
 
-                        if(!lessons.isEmpty()){
-                            days_btn.setVisibility(View.VISIBLE);
-                        } else days_btn.setVisibility(View.INVISIBLE);
+                        days_btn.setVisibility(View.VISIBLE);
 
                         View.OnClickListener listener = new View.OnClickListener() {
 

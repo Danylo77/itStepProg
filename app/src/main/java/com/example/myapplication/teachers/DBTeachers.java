@@ -120,7 +120,7 @@ public class DBTeachers extends SQLiteOpenHelper {
 
                     //get day of month by current week and day
                     LocalDate date = d.with(TemporalAdjusters.dayOfWeekInMonth(now.get(Calendar.WEEK_OF_MONTH)-1, day));
-                    if(date.getDayOfMonth()<now.get(Calendar.DAY_OF_MONTH)){
+                    if(date.getDayOfMonth()<=now.get(Calendar.DAY_OF_MONTH+1)){
                         date = d.with(TemporalAdjusters.dayOfWeekInMonth(now.get(Calendar.WEEK_OF_MONTH), day));
                     }
                     //parse hour and minutes

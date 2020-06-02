@@ -1,6 +1,8 @@
 package com.example.myapplication.audiences;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
@@ -33,6 +37,7 @@ public class RecyclerViewAdapterAudiences extends RecyclerView.Adapter<RecyclerV
 
     RecyclerViewAdapterAudiences(Context context, ArrayList<Audience> audiences) {
         mAudiences = audiences;
+        mContext = context;
     }
 
     @NonNull
@@ -42,6 +47,7 @@ public class RecyclerViewAdapterAudiences extends RecyclerView.Adapter<RecyclerV
         return new ViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
@@ -49,6 +55,9 @@ public class RecyclerViewAdapterAudiences extends RecyclerView.Adapter<RecyclerV
 
         //holder.name.setText(mNames.get(position));
         String editable = String.valueOf(mAudiences.get(position).getNumber());
+        if(mAudiences.get(position).getTf() == 1){
+            holder.name.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.colorAccent));
+        }
         holder.name.setText(editable);
 
         holder.name.setOnClickListener(new View.OnClickListener() {

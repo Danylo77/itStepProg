@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         dbAudience.writeBusyAudiences(busyAudiencesList);
-
+        Log.v("ifActive", "last lesson: " + lessons.get(lessons.size()-1).toString());
 
 
         FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
