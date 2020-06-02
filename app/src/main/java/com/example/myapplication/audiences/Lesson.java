@@ -21,6 +21,16 @@ public class Lesson {
         this.audNumber = audNumber;
     }
 
+    public static ArrayList<Lesson> getLessonsByAudienceAndDay(List<Lesson> lessonsList, int audience, int day_numb) {
+        ArrayList<Lesson> lessons = new ArrayList<>();
+        for(Lesson lesson: lessonsList){
+            if(lesson.getInterval().getStart().getDayOfWeek() == day_numb && lesson.getAudNumber() == audience){
+                lessons.add(lesson);
+            }
+        }
+        return lessons;
+    }
+
     public String getTeacherName() {
         return teacherName;
     }

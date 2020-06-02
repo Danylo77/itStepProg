@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class RecyclerViewAdapterLessons extends RecyclerView.Adapter<RecyclerViewAdapterLessons.ViewHolder> {
 
@@ -47,8 +48,17 @@ public class RecyclerViewAdapterLessons extends RecyclerView.Adapter<RecyclerVie
 
         //holder.name.setText(mNames.get(position));
         Lesson lesson = mLessons.get(position);
+        StringBuilder hourEnd = new StringBuilder(String.valueOf(lesson.getInterval().getEnd().getHourOfDay()));
+        StringBuilder hourStart = new StringBuilder(String.valueOf(lesson.getInterval().getStart().getHourOfDay()));
+        String minuteStart = String.valueOf(lesson.getInterval().getStart().getMinuteOfHour());
+        String minuteEnd = String.valueOf(lesson.getInterval().getEnd().getMinuteOfHour());
+        if(minuteEnd.length() == 1){minuteEnd+="0";}
+        if(minuteStart.length() == 1){minuteStart+="0";}
+        if(hourStart.length() == 1){hourStart.insert(0,"0");}
+        if(hourEnd.length() == 1){hourEnd.insert(0,"0");}
         String editable = lesson.getSubjectName() + " | " + lesson.getTeacherName()
-                        + "\n" + lesson.getInterval().getStart().toString();
+                        + "\n" + hourStart + ":" + minuteStart +
+                " - " + hourEnd  + ":" + minuteEnd;
         holder.name.setText(editable);
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override

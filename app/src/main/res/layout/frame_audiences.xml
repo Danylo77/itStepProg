@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +25,7 @@
         >
     </androidx.recyclerview.widget.RecyclerView>
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="350dp"
@@ -32,6 +34,18 @@
         >
     </androidx.recyclerview.widget.RecyclerView>
 
-
     </LinearLayout>
+
+    <TextView
+        android:layout_gravity="end|center_vertical"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:id="@+id/day_of_week_selector"
+        android:gravity="center"
+        android:textColor="#000"
+        android:layout_marginBottom="75dp"
+        android:layout_marginEnd="26dp"
+        android:background="@drawable/ellipse_audience"
+        android:layout_marginRight="21dp"
+        />
 </FrameLayout>

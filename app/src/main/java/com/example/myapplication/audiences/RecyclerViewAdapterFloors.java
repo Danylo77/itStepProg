@@ -57,7 +57,6 @@ public class RecyclerViewAdapterFloors extends RecyclerView.Adapter<RecyclerView
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return mNames.size();

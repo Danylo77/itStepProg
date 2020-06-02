@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case "Teachers":
                         showFragment(new TeachersFragment());
+                        break;
                 }
                 Log.v("menuItem",menuItem.getTitle()+"");
                 return false;
