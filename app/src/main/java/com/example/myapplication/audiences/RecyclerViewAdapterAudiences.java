@@ -24,18 +24,18 @@ public class RecyclerViewAdapterAudiences extends RecyclerView.Adapter<RecyclerV
 
     private OnAudienceClickedListener onAudienceClickedListener;
     private Context mContext;
+    private DBAudiences dbAudiences;
 
-    void setOnAudienceClickedListener(OnAudienceClickedListener l) {
+    public void setOnAudienceClickedListener(OnAudienceClickedListener l) {
         onAudienceClickedListener = l;
     }
-
 
     private static final String TAG = "ViewAdapterAudiences";
 
     //vars
     private ArrayList<Audience> mAudiences = new ArrayList<>();
 
-    RecyclerViewAdapterAudiences(Context context, ArrayList<Audience> audiences) {
+    public RecyclerViewAdapterAudiences(Context context, ArrayList<Audience> audiences) {
         mAudiences = audiences;
         mContext = context;
     }
@@ -44,20 +44,28 @@ public class RecyclerViewAdapterAudiences extends RecyclerView.Adapter<RecyclerV
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_audiences_item, parent, false);
+        dbAudiences = DBAudiences.getInstance(mContext);
         return new ViewHolder(view);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
 
         //holder.name.setText(mNames.get(position));
         String editable = String.valueOf(mAudiences.get(position).getNumber());
         if(mAudiences.get(position).getTf() == 1){
-            holder.name.setBackgroundTintList(mContext.getResources().getColorStateList(R.color.colorAccent));
+            holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_border));
         }
+        if(mAudiences.get(position).getFavourite() == 1){
+            holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_star));
+        }
+        if(mAudiences.get(position).getFavourite() == 1 && mAudiences.get(position).getTf() == 1){
+            holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_border_star));
+        }
+        //if(mAudiences.get(position).getIsFavo)
         holder.name.setText(editable);
 
         holder.name.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +80,37 @@ public class RecyclerViewAdapterAudiences extends RecyclerView.Adapter<RecyclerV
                 onAudienceClickedListener.onAudienceClickedListener(whatAudience);
             }
         });
+        holder.name.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Audience whatAudience = mAudiences.get(position);
+
+                if(whatAudience.getFavourite() == 1 && whatAudience.getTf() == 0){
+                    holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_audience));
+                    Log.v("lalal","loh");
+                    whatAudience.setFavourite(0);
+                }else
+                if(whatAudience.getFavourite() == 0 && whatAudience.getTf() == 0){
+                    holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_star));
+                    whatAudience.setFavourite(1);
+                }else
+                if(whatAudience.getFavourite() == 0 && whatAudience.getTf() == 1){
+                    holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_border_star));
+                    whatAudience.setFavourite(1);
+                }else
+                if(whatAudience.getFavourite() == 1 && whatAudience.getTf() == 1){
+                    holder.name.setBackground(mContext.getResources().getDrawable(R.drawable.ellipse_border));
+                    whatAudience.setFavourite(0);
+                }
+
+                dbAudiences.updateFavourite(whatAudience);
+
+                return false;
+            }
+        });
+
+
+
     }
 
     @Override

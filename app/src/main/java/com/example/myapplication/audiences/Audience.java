@@ -1,14 +1,24 @@
 package com.example.myapplication.audiences;
 
-class Audience {
+public class Audience {
+    private int favourite;
     private int tf, number, floor;
     private String description;
 
-    public Audience(int tf, int number, int floor, String description) {
+    public Audience(int tf, int number, int floor, String description, int favourite) {
         this.tf = tf;
         this.number = number;
         this.floor = floor;
         this.description = description;
+        this.favourite = favourite;
+    }
+
+    public int getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(int favourite) {
+        this.favourite = favourite;
     }
 
     public int getTf() {

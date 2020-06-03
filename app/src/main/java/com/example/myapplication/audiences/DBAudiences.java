@@ -21,11 +21,12 @@ public class DBAudiences extends SQLiteOpenHelper {
     public static final String KEY_FLOOR = "floor";
     public static final String KEY_NUMBER_OF_AUD = "number";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_FAVOURITE = "favourite";
     public static final String KEY_TF = "tf";
 
 
 
-    static final String[] COLUMNS = {KEY_ID, TABLE_AUDIENCES, KEY_FLOOR, KEY_NUMBER_OF_AUD,KEY_DESCRIPTION,KEY_TF};
+    static final String[] COLUMNS = {KEY_ID, TABLE_AUDIENCES, KEY_FLOOR, KEY_NUMBER_OF_AUD,KEY_DESCRIPTION,KEY_TF,KEY_FAVOURITE};
 
     private DBAudiences(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,8 +42,8 @@ public class DBAudiences extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_AUDIENCES + "(" + KEY_ID
-                + " integer primary key," + KEY_FLOOR + " imteger," + KEY_NUMBER_OF_AUD + " integer," + KEY_DESCRIPTION + " text," +
-                KEY_TF + " integer"+ ")");
+                + " integer primary key," + KEY_FLOOR + " integer," + KEY_NUMBER_OF_AUD + " integer," + KEY_DESCRIPTION + " text," +
+                KEY_TF + " integer,"+ KEY_FAVOURITE + " integer" + ")");
     }
 
     @Override
@@ -60,12 +61,14 @@ public class DBAudiences extends SQLiteOpenHelper {
             int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
             int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION);
             int tfIndex = cursor.getColumnIndex(KEY_TF);
+            int favouriteIndex = cursor.getColumnIndex(KEY_FAVOURITE);
             do{
                 Log.d("mLog", "ID = " + cursor.getInt(idIndex) +
                         ", floor = " + cursor.getInt(floorIndex)+
                         ", number = " + cursor.getInt(numberIndex)+
                         ", description = " + cursor.getString(descriptionIndex)+
-                        ", tf = " + cursor.getInt(tfIndex));
+                        ", tf = " + cursor.getInt(tfIndex)+
+                        ", favourite = " + cursor.getInt(favouriteIndex));
             }while (cursor.moveToNext());
         }else
             Log.d("mLog","0 rows");
@@ -105,10 +108,55 @@ public class DBAudiences extends SQLiteOpenHelper {
             int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
             int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION);
             int tfIndex = cursor.getColumnIndex(KEY_TF);
+            int favouriteIndex = cursor.getColumnIndex(KEY_FAVOURITE);
             do{
                 if(cursor.getInt(floorIndex) == floor){
                     audiences.add(new Audience(cursor.getInt(tfIndex),cursor.getInt(numberIndex),
-                            cursor.getInt(floorIndex),cursor.getString(descriptionIndex)));
+                            cursor.getInt(floorIndex),cursor.getString(descriptionIndex), cursor.getInt(favouriteIndex)));
+                }
+            }while (cursor.moveToNext());
+        }else
+            Log.d("mLog","0 rows");
+        cursor.close();
+        db.close();
+        return audiences;
+    }
+
+    public void updateFavourite(Audience whatAudience) {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            int idIndex = cursor.getColumnIndex(KEY_ID);
+            int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
+            int tfIndex = cursor.getColumnIndex(KEY_TF);
+            int favouriteIndex = cursor.getColumnIndex(KEY_FAVOURITE);
+            do{
+                ContentValues cv = new ContentValues();
+                if(cursor.getInt(numberIndex) == whatAudience.getNumber()){
+                    cv.put(KEY_FAVOURITE, whatAudience.getFavourite());
+                    db.update(TABLE_AUDIENCES, cv, "_id="+cursor.getInt(idIndex), null);
+                }
+            }while (cursor.moveToNext());
+        }else
+            Log.d("mLog","0 rows");
+        cursor.close();
+        db.close();
+    }
+
+    public ArrayList<Audience> getFavouriteAudiences() {
+        ArrayList<Audience> audiences = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.query(TABLE_AUDIENCES, null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            int favouriteIndex = cursor.getColumnIndex(KEY_FAVOURITE);
+            int floorIndex = cursor.getColumnIndex(KEY_FLOOR);
+            int numberIndex = cursor.getColumnIndex(KEY_NUMBER_OF_AUD);
+            int descriptionIndex = cursor.getColumnIndex(KEY_DESCRIPTION);
+            int tfIndex = cursor.getColumnIndex(KEY_TF);
+            do{
+                if(cursor.getInt(favouriteIndex) == 1){
+                   audiences.add(new Audience(cursor.getInt(tfIndex),cursor.getInt(numberIndex),cursor.getInt(floorIndex),
+                           cursor.getString(descriptionIndex),cursor.getInt(favouriteIndex)));
                 }
             }while (cursor.moveToNext());
         }else

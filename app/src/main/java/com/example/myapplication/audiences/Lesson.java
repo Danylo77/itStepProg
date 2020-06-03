@@ -61,6 +61,16 @@ public class Lesson {
         return new ArrayList<>(subjects);
     }
 
+    public static ArrayList<Lesson> getLessonsByAudience(List<Lesson> lessonsList, int audNumber) {
+        ArrayList<Lesson> lessons = new ArrayList<>();
+        for (Lesson lesson : lessonsList){
+            if(lesson.getAudNumber() == audNumber){
+                lessons.add(lesson);
+            }
+        }
+        return lessons;
+    }
+
     public String getTeacherName() {
         return teacherName;
     }
