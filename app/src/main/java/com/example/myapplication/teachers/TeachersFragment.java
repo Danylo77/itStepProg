@@ -30,6 +30,8 @@ public class TeachersFragment extends Fragment implements SearchView.OnQueryText
     private ArrayAdapter<String> arrayAdapter;
     private DBTeachers dbTeachers;
 
+    public TeachersFragment(){ }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

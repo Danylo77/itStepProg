@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myapplication.audiences.AudiencesFragment;
 import com.example.myapplication.audiences.DBAudiences;
 import com.example.myapplication.audiences.Lesson;
+import com.example.myapplication.favourite.FavouriteFragment;
+import com.example.myapplication.news.NewsFragment;
 import com.example.myapplication.teachers.DBTeachers;
 import com.example.myapplication.teachers.TeachersFragment;
 
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         dbAudience.writeBusyAudiences(busyAudiencesList);
         Log.v("ifActive", "last lesson: " + lessons.get(lessons.size()-1).toString());
 
+        showFragment(new AudiencesFragment());
 
         FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
         fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
@@ -68,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case "Teachers":
                         showFragment(new TeachersFragment());
+                        break;
+                    case "News":
+                        showFragment(new NewsFragment());
+                        break;
+                    case "Favourite":
+                        showFragment(new FavouriteFragment());
                         break;
                 }
                 Log.v("menuItem",menuItem.getTitle()+"");
