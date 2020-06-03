@@ -20,7 +20,7 @@ public class RecyclerViewAdapterLessons extends RecyclerView.Adapter<RecyclerVie
     private OnLessonClickedListener onLessonClickedListener;
     private Context mContext;
 
-    void setOnLessonClickedListener(OnLessonClickedListener l) {
+    public void setOnLessonClickedListener(OnLessonClickedListener l) {
         onLessonClickedListener = l;
     }
 
@@ -30,7 +30,7 @@ public class RecyclerViewAdapterLessons extends RecyclerView.Adapter<RecyclerVie
     //vars
     private ArrayList<Lesson> mLessons = new ArrayList<>();
 
-    RecyclerViewAdapterLessons(Context context, ArrayList<Lesson> lessons) {
+    public RecyclerViewAdapterLessons(Context context, ArrayList<Lesson> lessons) {
         mLessons = lessons;
     }
 

@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/recyclerViewFloor"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:overScrollMode="never">
     </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/recyclerViewAudience"
         android:orientation="horizontal"
+        android:overScrollMode="never"
         >
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -31,6 +33,7 @@
         android:layout_height="350dp"
         android:id="@+id/recyclerViewLessons"
         android:orientation="vertical"
+        android:overScrollMode="never"
         >
     </androidx.recyclerview.widget.RecyclerView>
 

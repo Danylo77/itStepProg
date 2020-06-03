@@ -4,7 +4,11 @@ import org.joda.time.Interval;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Lesson {
     private int id;
@@ -29,6 +33,32 @@ public class Lesson {
             }
         }
         return lessons;
+    }
+
+    public static ArrayList<String> getTeachersList(List<Lesson> lessonsList) {
+        Set<String> teachers = new TreeSet<>();
+        for(Lesson lesson: lessonsList){
+                teachers.add(lesson.getTeacherName());
+        }
+        return new ArrayList<>(teachers);
+    }
+
+    public static ArrayList<Lesson> getLessonsByTeacherName(List<Lesson> lessonsList, String name) {
+        ArrayList<Lesson> lessons = new ArrayList<>();
+        for (Lesson lesson: lessonsList){
+            if(lesson.getTeacherName().equals(name)){
+                lessons.add(lesson);
+            }
+        }
+        return lessons;
+    }
+
+    public static List<String> getUniqueSubjects(List<Lesson> lessons) {
+        Set<String> subjects = new HashSet<>();
+        for(Lesson lesson: lessons){
+            subjects.add(lesson.getSubjectName());
+        }
+        return new ArrayList<>(subjects);
     }
 
     public String getTeacherName() {
