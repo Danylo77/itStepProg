@@ -38,7 +38,7 @@ public class Lesson {
     public static ArrayList<String> getTeachersList(List<Lesson> lessonsList) {
         Set<String> teachers = new TreeSet<>();
         for(Lesson lesson: lessonsList){
-                teachers.add(lesson.getTeacherName());
+                teachers.add(lesson.getTeacherName() + ' ' + lesson.getTeacherSurname());
         }
         return new ArrayList<>(teachers);
     }

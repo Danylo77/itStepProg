@@ -49,12 +49,14 @@ public class TeachersFragment extends Fragment implements SearchView.OnQueryText
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String teacherName = list_teachers.getItemAtPosition(position).toString();
                 Bundle b = new Bundle();
-                b.putString("TEACHER_NAME", teacherName);
+                b.putString("TEACHER_NAME", teacherName.substring(0,teacherName.indexOf(' ')).trim());
                 FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
 
                 Fragment singleTeacherFragment = new SingleTeacherFragment();
                 singleTeacherFragment.setArguments(b);
                 mTransaction.replace(R.id.teachersFrame, singleTeacherFragment, singleTeacherFragment.getClass().getName());
+                list_teachers.setVisibility(View.INVISIBLE);
+                c_searchBar.setVisibility(View.INVISIBLE);
                 mTransaction.commit();
             }
         });

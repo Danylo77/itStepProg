@@ -32,7 +32,7 @@ public class SingleTeacherFragment extends Fragment {
     TextView whatSubjects;
     Button backButton;
     private DBTeachers dbTeachers;
-    private RecyclerViewAdapterLessons adapterLessons;
+    private RecyclerViewAdapterLessonsTeacher adapterLessons;
 
     SingleTeacherFragment(){ }
 
@@ -55,9 +55,12 @@ public class SingleTeacherFragment extends Fragment {
 
         dbTeachers = DBTeachers.getInstance(getContext());
 
+
         Bundle bundle = getArguments();
         String teacherName = bundle.getString("TEACHER_NAME", "");
-        nameTeacher.setText(teacherName);
+        ArrayList<Lesson> lessons = Lesson.getLessonsByTeacherName(dbTeachers.getLessonsList(), teacherName);
+
+        nameTeacher.setText(teacherName+" "+lessons.get(0).getTeacherSurname());
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +72,7 @@ public class SingleTeacherFragment extends Fragment {
             }
         });
 
-        ArrayList<Lesson> lessons = Lesson.getLessonsByTeacherName(dbTeachers.getLessonsList(), teacherName);
+
 
         StringBuilder displaySubj = new StringBuilder("Teaches ");
         List<String> subjList = Lesson.getUniqueSubjects(lessons);
@@ -86,7 +89,7 @@ public class SingleTeacherFragment extends Fragment {
         LinearLayoutManager layoutManagerLessons = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         final RecyclerView recyclerViewLessons = view.findViewById(R.id.recyclerViewLessonsTeacher);
         recyclerViewLessons.setLayoutManager(layoutManagerLessons);
-        adapterLessons = new RecyclerViewAdapterLessons(getContext(), lessons);
+        adapterLessons = new RecyclerViewAdapterLessonsTeacher(getContext(), lessons);
         recyclerViewLessons.setAdapter(adapterLessons);
 
         // when clicked on lesson
